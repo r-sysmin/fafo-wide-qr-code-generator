@@ -1,0 +1,70 @@
+import { cn } from '@/lib/utils';
+import urlIcon from '@/assets/qr-type-url.webp';
+import textIcon from '@/assets/qr-type-text.webp';
+import wifiIcon from '@/assets/qr-type-wifi.webp';
+import emailIcon from '@/assets/qr-type-email.webp';
+import smsIcon from '@/assets/qr-type-sms.webp';
+import imageIcon from '@/assets/qr-type-image.webp';
+import pdfIcon from '@/assets/qr-type-pdf.webp';
+import mp3Icon from '@/assets/qr-type-mp3.webp';
+import appIcon from '@/assets/qr-type-app.webp';
+
+export type QRType = 'url' | 'text' | 'wifi' | 'email' | 'sms' | 'image' | 'pdf' | 'mp3' | 'app';
+
+interface QRTypeOption {
+  id: QRType;
+  label: string;
+  image: string;
+}
+
+const qrTypes: QRTypeOption[] = [
+  { id: 'url', label: 'URL', image: urlIcon },
+  { id: 'text', label: 'Text', image: textIcon },
+  { id: 'wifi', label: 'Wi-Fi', image: wifiIcon },
+  { id: 'email', label: 'E-mail', image: emailIcon },
+  { id: 'sms', label: 'SMS', image: smsIcon },
+  { id: 'image', label: 'Image', image: imageIcon },
+  { id: 'pdf', label: 'PDF', image: pdfIcon },
+  { id: 'mp3', label: 'MP3', image: mp3Icon },
+  { id: 'app', label: 'App', image: appIcon },
+];
+
+interface QRTypeSelectorProps {
+  selectedType: QRType;
+  onTypeChange: (type: QRType) => void;
+}
+
+export function QRTypeSelector({ selectedType, onTypeChange }: QRTypeSelectorProps) {
+  return (
+    <div>
+      <h2 className="text-[20px] font-medium text-[#171717] leading-[120%] mb-4">Select QR type</h2>
+      <div className="flex flex-col gap-1">
+        {qrTypes.map((type, index) => (
+          <button
+            key={type.id}
+            onClick={() => onTypeChange(type.id)}
+            className={cn(
+              "w-full flex items-center gap-3 px-3 rounded-xl transition-all duration-200 border",
+              selectedType === type.id
+                ? "gradient-border-selected"
+                : "border-transparent hover:bg-[#F0F0F0]"
+            )}
+            style={{ height: 80 }}
+          >
+            <img 
+              src={type.image} 
+              alt={type.label} 
+              className="rounded-xl object-cover"
+              width={90}
+              height={64}
+              loading={index < 3 ? "eager" : "lazy"}
+              fetchPriority={index < 2 ? "high" : undefined}
+              decoding={index < 3 ? "sync" : "async"}
+            />
+            <span className="font-medium text-foreground">{type.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
